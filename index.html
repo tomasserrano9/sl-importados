@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SL Importaciones — Catálogo</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Outfit:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #080808;
@@ -41,6 +41,9 @@ header { position: sticky; top: 0; z-index: 100; background: rgba(8,8,8,0.92); b
 .header-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
 .badge-count { background: var(--accent); color: #fff; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 13px; padding: 3px 12px; border-radius: 20px; letter-spacing: 0.5px; }
 .update-time { font-size: 11px; color: var(--muted); font-weight: 300; }
+.ig-link { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 9px; border: 1px solid var(--border); color: var(--muted2); transition: border-color 0.2s, color 0.2s, background 0.2s; text-decoration: none; flex-shrink: 0; }
+.ig-link:hover { border-color: #E1306C; color: #E1306C; background: rgba(225,48,108,0.08); }
+
 .filters-wrap { background: var(--surface); border-bottom: 1px solid var(--border); }
 .filters-inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; gap: 8px; padding: 14px 32px; overflow-x: auto; scrollbar-width: none; }
 .filters-inner::-webkit-scrollbar { display: none; }
@@ -67,7 +70,7 @@ main { max-width: 1280px; margin: 0 auto; padding: 40px 32px; }
 .card-cat-badge { position: absolute; top: 12px; left: 12px; background: rgba(8,8,8,0.75); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 3px 9px; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); }
 .card-body { padding: 18px; display: flex; flex-direction: column; gap: 6px; }
 .card-name { font-size: 14px; font-weight: 500; line-height: 1.45; color: var(--text); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.card-price { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; color: var(--text); letter-spacing: -0.5px; margin-top: 4px; }
+.card-price { font-family: 'DM Mono', monospace; font-size: 22px; font-weight: 500; color: var(--text); letter-spacing: -0.5px; margin-top: 4px; }
 .card-price span { font-size: 14px; font-weight: 400; color: var(--muted); margin-right: 2px; }
 .card-specs { font-size: 11px; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.6; font-weight: 300; }
 .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
@@ -86,7 +89,7 @@ main { max-width: 1280px; margin: 0 auto; padding: 40px 32px; }
 .modal-body { padding: 32px; }
 .modal-cat { display: inline-flex; align-items: center; gap: 6px; background: var(--accent-glow); border: 1px solid rgba(224,43,29,0.3); border-radius: 6px; padding: 4px 10px; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
 .modal-name { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 700; line-height: 1.25; color: var(--text); margin-bottom: 4px; }
-.modal-price { font-family: 'Syne', sans-serif; font-size: 42px; font-weight: 800; color: var(--text); letter-spacing: -1px; margin-bottom: 24px; line-height: 1; }
+.modal-price { font-family: 'DM Mono', monospace; font-size: 38px; font-weight: 500; color: var(--text); letter-spacing: -1px; margin-bottom: 24px; line-height: 1; }
 .modal-price small { font-size: 18px; font-weight: 400; color: var(--muted); margin-right: 3px; }
 .modal-divider { height: 1px; background: var(--border); margin: 20px 0; }
 .modal-section-title { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
@@ -141,6 +144,9 @@ main { max-width: 1280px; margin: 0 auto; padding: 40px 32px; }
       <input type="text" id="searchInput" placeholder="Buscar producto...">
     </div>
     <div class="header-right">
+      <a class="ig-link" href="https://www.instagram.com/sl.importados" target="_blank" aria-label="Instagram">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      </a>
       <span class="badge-count" id="productCount">0</span>
       <span style="color:var(--muted);font-size:13px;font-weight:300">productos</span>
       <span class="update-time" id="updateTime"></span>
