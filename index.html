@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SL Importados — Catálogo</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface2: #1a1a1a;
+    --border: #2a2a2a;
+    --accent: #00e5a0;
+    --accent2: #00b37a;
+    --text: #f0f0f0;
+    --muted: #888;
+    --danger: #ff4d4d;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,10,10,0.92);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+  }
+
+  .header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    gap: 16px;
+  }
+
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 2px;
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  .logo span { color: var(--accent); }
+
+  .search-bar {
+    flex: 1;
+    max-width: 400px;
+    position: relative;
+  }
+
+  .search-bar input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 16px 10px 40px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .search-bar input:focus { border-color: var(--accent); }
+  .search-bar input::placeholder { color: var(--muted); }
+
+  .search-bar svg {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+  }
+
+  .badge-count {
+    background: var(--accent);
+    color: #000;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+  }
+
+  .update-time {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* FILTROS */
+  .filters-wrap {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+  }
+
+  .filters-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .filters-inner::-webkit-scrollbar { display: none; }
+
+  .filter-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .cat-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .cat-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .cat-btn.active { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 600; }
+
+  .sort-select {
+    margin-left: auto;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    outline: none;
+    white-space: nowrap;
+  }
+
+  .sort-select option { background: var(--surface2); }
+
+  /* MAIN */
+  main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 24px;
+  }
+
+  /* GRID */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+  }
+
+  /* CARD */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+    cursor: pointer;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+    box-shadow: 0 8px 32px rgba(0,229,160,0.12);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .card-img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    background: var(--surface2);
+    display: block;
+  }
+
+  .card-img-placeholder {
+    width: 100%;
+    aspect-ratio: 1;
+    background: var(--surface2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+  }
+
+  .card-body {
+    padding: 16px;
+  }
+
+  .card-cat {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  .card-name {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--text);
+    margin-bottom: 12px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    letter-spacing: 1px;
+    color: var(--accent);
+  }
+
+  .card-specs {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.5;
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 999;
+    backdrop-filter: blur(8px);
+    padding: 20px;
+    overflow-y: auto;
+  }
+
+  .modal-overlay.open { display: flex; align-items: center; justify-content: center; }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    max-width: 620px;
+    width: 100%;
+    overflow: hidden;
+    animation: modalIn 0.3s ease;
+  }
+
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.95) translateY(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .modal-img {
+    width: 100%;
+    max-height: 320px;
+    object-fit: cover;
+    background: var(--surface2);
+  }
+
+  .modal-img-placeholder {
+    width: 100%;
+    height: 200px;
+    background: var(--surface2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 72px;
+  }
+
+  .modal-body { padding: 28px; }
+
+  .modal-cat {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  .modal-name {
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.3;
+    margin-bottom: 20px;
+  }
+
+  .modal-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    color: var(--accent);
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+  }
+
+  .modal-section { margin-bottom: 16px; }
+
+  .modal-section-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .modal-section p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #ccc;
+  }
+
+  .specs-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .spec-chip {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 12px;
+    color: var(--text);
+  }
+
+  .modal-footer {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .btn-wsp {
+    flex: 1;
+    background: #25D366;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .btn-wsp:hover { opacity: 0.85; }
+
+  .btn-close {
+    background: var(--surface2);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+
+  .btn-close:hover { border-color: var(--accent); }
+
+  /* ESTADOS */
+  .loading, .empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--muted);
+  }
+
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 16px;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .empty-icon { font-size: 48px; margin-bottom: 12px; }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .logo { font-size: 22px; }
+    .header-right { display: none; }
+    .grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .card-price { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">SL <span>IMPORTADOS</span></div>
+    <div class="search-bar">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input type="text" id="searchInput" placeholder="Buscar producto...">
+    </div>
+    <div class="header-right">
+      <span class="badge-count" id="productCount">0</span>
+      <span style="color:var(--muted);font-size:13px">productos</span>
+      <span class="update-time" id="updateTime"></span>
+    </div>
+  </div>
+</header>
+
+<div class="filters-wrap">
+  <div class="filters-inner">
+    <span class="filter-label">Categoría</span>
+    <button class="cat-btn active" data-cat="Todos">Todos</button>
+    <select class="sort-select" id="sortSelect">
+      <option value="default">Orden de carga</option>
+      <option value="price-asc">Precio: menor a mayor</option>
+      <option value="price-desc">Precio: mayor a menor</option>
+      <option value="name-asc">Nombre A→Z</option>
+      <option value="name-desc">Nombre Z→A</option>
+    </select>
+  </div>
+</div>
+
+<main>
+  <div class="loading" id="loadingState">
+    <div class="loading-spinner"></div>
+    <p>Cargando catálogo...</p>
+  </div>
+  <div class="grid" id="productsGrid" style="display:none"></div>
+  <div class="empty-state" id="emptyState" style="display:none">
+    <div class="empty-icon">📦</div>
+    <p>No se encontraron productos</p>
+  </div>
+</main>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script>
+const SHEET_ID = "1l6pRTYDWOf4--MpL2wf0Pu79VA7dUVsXPoQsm0s6mNI";
+const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=PRODUCTOS`;
+
+let allProducts = [];
+let activeCategory = "Todos";
+let sortMode = "default";
+let searchQuery = "";
+
+// Emoji por categoría
+const CAT_EMOJI = {
+  "TV": "📺", "Smartphone": "📱", "Notebook": "💻", "Lavarropas": "🫧",
+  "Heladera": "❄️", "Consola": "🎮", "Smartwatch": "⌚", "Ventilador": "🌀",
+  "Aire Acondicionado": "🌡️", "Microondas": "📡", "Tablet": "📲"
+};
+
+function getCatEmoji(cat) {
+  if (!cat) return "📦";
+  for (const [k, v] of Object.entries(CAT_EMOJI)) {
+    if (cat.toLowerCase().includes(k.toLowerCase())) return v;
+  }
+  return "📦";
+}
+
+function formatPrice(val) {
+  if (!val) return "";
+  const num = parseFloat(String(val).replace(/[^0-9.]/g, ""));
+  if (isNaN(num)) return val;
+  return "$" + num.toLocaleString("es-AR");
+}
+
+async function loadProducts() {
+  try {
+    const res = await fetch(SHEET_URL);
+    const text = await res.text();
+    const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
+    const rows = json.table.rows;
+
+    allProducts = [];
+    for (const row of rows) {
+      const cells = row.c;
+      if (!cells || !cells[1] || !cells[1].v) continue;
+      allProducts.push({
+        fecha:       cells[0]?.v || "",
+        nombre:      cells[1]?.v || "",
+        categoria:   cells[2]?.v || "",
+        costo:       parseFloat(cells[3]?.v) || 0,
+        venta:       parseFloat(cells[4]?.v) || 0,
+        margen:      cells[5]?.v || "",
+        descripcion: cells[6]?.v || "",
+        specs:       cells[7]?.v || "",
+        texto_redes: cells[8]?.v || "",
+        imagen:      cells[9]?.v || "",
+      });
+    }
+
+    document.getElementById("productCount").textContent = allProducts.length;
+    document.getElementById("updateTime").textContent = "Actualizado " + new Date().toLocaleTimeString("es-AR", {hour:"2-digit", minute:"2-digit"});
+
+    buildCategoryFilters();
+    render();
+
+  } catch (e) {
+    document.getElementById("loadingState").innerHTML = `<div class="empty-icon">⚠️</div><p>Error cargando productos.<br>Verificá que la planilla sea pública.</p>`;
+  }
+}
+
+function buildCategoryFilters() {
+  const cats = ["Todos", ...new Set(allProducts.map(p => p.categoria).filter(Boolean))].sort();
+  const wrap = document.querySelector(".filters-inner");
+  // Limpiar botones anteriores
+  wrap.querySelectorAll(".cat-btn").forEach(b => b.remove());
+  const sortEl = wrap.querySelector(".sort-select");
+  cats.forEach(cat => {
+    const btn = document.createElement("button");
+    btn.className = "cat-btn" + (cat === activeCategory ? " active" : "");
+    btn.dataset.cat = cat;
+    btn.textContent = (cat === "Todos" ? "" : getCatEmoji(cat) + " ") + cat;
+    btn.onclick = () => { activeCategory = cat; document.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("active")); btn.classList.add("active"); render(); };
+    wrap.insertBefore(btn, sortEl);
+  });
+}
+
+function getFiltered() {
+  let list = [...allProducts];
+  if (activeCategory !== "Todos") list = list.filter(p => p.categoria === activeCategory);
+  if (searchQuery) list = list.filter(p => p.nombre.toLowerCase().includes(searchQuery) || p.categoria.toLowerCase().includes(searchQuery));
+  if (sortMode === "price-asc") list.sort((a,b) => a.venta - b.venta);
+  else if (sortMode === "price-desc") list.sort((a,b) => b.venta - a.venta);
+  else if (sortMode === "name-asc") list.sort((a,b) => a.nombre.localeCompare(b.nombre));
+  else if (sortMode === "name-desc") list.sort((a,b) => b.nombre.localeCompare(a.nombre));
+  return list;
+}
+
+function render() {
+  const grid = document.getElementById("productsGrid");
+  const loading = document.getElementById("loadingState");
+  const empty = document.getElementById("emptyState");
+  const list = getFiltered();
+
+  loading.style.display = "none";
+
+  if (list.length === 0) {
+    grid.style.display = "none";
+    empty.style.display = "block";
+    return;
+  }
+
+  empty.style.display = "none";
+  grid.style.display = "grid";
+  grid.innerHTML = "";
+
+  list.forEach((p, i) => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.style.animationDelay = (i * 0.04) + "s";
+    card.innerHTML = p.imagen
+      ? `<img class="card-img" src="${p.imagen}" alt="${p.nombre}" loading="lazy" onerror="this.parentElement.querySelector('.card-img-placeholder') && this.remove(); this.style.display='none'">`
+      : `<div class="card-img-placeholder">${getCatEmoji(p.categoria)}</div>`;
+    card.innerHTML += `
+      <div class="card-body">
+        <div class="card-cat">${getCatEmoji(p.categoria)} ${p.categoria || "General"}</div>
+        <div class="card-name">${p.nombre}</div>
+        <div class="card-price">${formatPrice(p.venta)}</div>
+        ${p.specs ? `<div class="card-specs">${p.specs}</div>` : ""}
+      </div>`;
+    card.onclick = () => openModal(p);
+    grid.appendChild(card);
+  });
+}
+
+function openModal(p) {
+  const content = document.getElementById("modalContent");
+  const specsArr = p.specs ? p.specs.split(",").map(s => s.trim()).filter(Boolean) : [];
+  content.innerHTML = `
+    ${p.imagen
+      ? `<img class="modal-img" src="${p.imagen}" alt="${p.nombre}" onerror="this.style.display='none'">`
+      : `<div class="modal-img-placeholder">${getCatEmoji(p.categoria)}</div>`}
+    <div class="modal-body">
+      <div class="modal-cat">${getCatEmoji(p.categoria)} ${p.categoria || "General"}</div>
+      <div class="modal-name">${p.nombre}</div>
+      <div class="modal-price">${formatPrice(p.venta)}</div>
+      ${p.descripcion ? `<div class="modal-section"><div class="modal-section-title">Descripción</div><p>${p.descripcion}</p></div>` : ""}
+      ${specsArr.length ? `<div class="modal-section"><div class="modal-section-title">Especificaciones</div><div class="specs-chips">${specsArr.map(s => `<span class="spec-chip">${s}</span>`).join("")}</div></div>` : ""}
+      <div class="modal-footer">
+        <button class="btn-wsp" onclick="window.open('https://wa.me/?text=Hola! Me interesa: ${encodeURIComponent(p.nombre)} - ${formatPrice(p.venta)}','_blank')">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+          Consultar por WhatsApp
+        </button>
+        <button class="btn-close" onclick="document.getElementById('modalOverlay').classList.remove('open')">✕</button>
+      </div>
+    </div>`;
+  document.getElementById("modalOverlay").classList.add("open");
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById("modalOverlay")) {
+    document.getElementById("modalOverlay").classList.remove("open");
+  }
+}
+
+document.getElementById("searchInput").addEventListener("input", e => {
+  searchQuery = e.target.value.toLowerCase();
+  render();
+});
+
+document.getElementById("sortSelect").addEventListener("change", e => {
+  sortMode = e.target.value;
+  render();
+});
+
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") document.getElementById("modalOverlay").classList.remove("open");
+});
+
+loadProducts();
+// Auto-refresh cada 5 minutos
+setInterval(loadProducts, 5 * 60 * 1000);
+</script>
+</body>
+</html>
