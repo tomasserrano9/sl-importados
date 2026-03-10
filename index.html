@@ -3,19 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SL Importados — Catálogo</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+<title>SL Importaciones — Catálogo</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0a0a0a;
-    --surface: #111111;
+    --bg: #000000;
+    --surface: #0f0f0f;
     --surface2: #1a1a1a;
     --border: #2a2a2a;
-    --accent: #00e5a0;
-    --accent2: #00b37a;
-    --text: #f0f0f0;
-    --muted: #888;
-    --danger: #ff4d4d;
+    --accent: #e02b1d;
+    --accent2: #ff4433;
+    --text: #ffffff;
+    --muted: #777;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -27,14 +26,13 @@
     min-height: 100vh;
   }
 
-  /* HEADER */
   header {
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(10,10,10,0.92);
+    background: rgba(0,0,0,0.96);
     backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
+    border-bottom: 2px solid var(--accent);
     padding: 0 24px;
   }
 
@@ -44,23 +42,26 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 64px;
+    height: 68px;
     gap: 16px;
   }
 
-  .logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 28px;
-    letter-spacing: 2px;
-    color: var(--text);
-    white-space: nowrap;
+  .logo-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    flex-shrink: 0;
   }
 
-  .logo span { color: var(--accent); }
+  .logo-svg {
+    height: 44px;
+    width: auto;
+  }
 
   .search-bar {
     flex: 1;
-    max-width: 400px;
+    max-width: 420px;
     position: relative;
   }
 
@@ -79,14 +80,7 @@
 
   .search-bar input:focus { border-color: var(--accent); }
   .search-bar input::placeholder { color: var(--muted); }
-
-  .search-bar svg {
-    position: absolute;
-    left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--muted);
-  }
+  .search-bar svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); }
 
   .header-right {
     display: flex;
@@ -97,19 +91,15 @@
 
   .badge-count {
     background: var(--accent);
-    color: #000;
+    color: #fff;
     font-size: 12px;
-    font-weight: 600;
-    padding: 2px 8px;
+    font-weight: 700;
+    padding: 2px 10px;
     border-radius: 20px;
   }
 
-  .update-time {
-    font-size: 11px;
-    color: var(--muted);
-  }
+  .update-time { font-size: 11px; color: var(--muted); }
 
-  /* FILTROS */
   .filters-wrap {
     background: var(--surface);
     border-bottom: 1px solid var(--border);
@@ -121,7 +111,7 @@
     margin: 0 auto;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     padding: 12px 0;
     overflow-x: auto;
     scrollbar-width: none;
@@ -152,7 +142,7 @@
   }
 
   .cat-btn:hover { border-color: var(--accent); color: var(--accent); }
-  .cat-btn.active { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 600; }
+  .cat-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
 
   .sort-select {
     margin-left: auto;
@@ -170,21 +160,18 @@
 
   .sort-select option { background: var(--surface2); }
 
-  /* MAIN */
   main {
     max-width: 1200px;
     margin: 0 auto;
     padding: 32px 24px;
   }
 
-  /* GRID */
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
     gap: 20px;
   }
 
-  /* CARD */
   .card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -196,9 +183,9 @@
   }
 
   .card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-5px);
     border-color: var(--accent);
-    box-shadow: 0 8px 32px rgba(0,229,160,0.12);
+    box-shadow: 0 10px 40px rgba(224,43,29,0.2);
   }
 
   @keyframes fadeUp {
@@ -221,16 +208,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 48px;
+    font-size: 52px;
   }
 
-  .card-body {
-    padding: 16px;
-  }
+  .card-body { padding: 16px; }
 
   .card-cat {
     font-size: 10px;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 1.5px;
     text-transform: uppercase;
     color: var(--accent);
@@ -251,7 +236,7 @@
 
   .card-price {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 26px;
+    font-size: 28px;
     letter-spacing: 1px;
     color: var(--accent);
   }
@@ -272,9 +257,9 @@
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.85);
+    background: rgba(0,0,0,0.92);
     z-index: 999;
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(10px);
     padding: 20px;
     overflow-y: auto;
   }
@@ -284,6 +269,7 @@
   .modal {
     background: var(--surface);
     border: 1px solid var(--border);
+    border-top: 3px solid var(--accent);
     border-radius: 20px;
     max-width: 620px;
     width: 100%;
@@ -296,12 +282,7 @@
     to { opacity: 1; transform: scale(1) translateY(0); }
   }
 
-  .modal-img {
-    width: 100%;
-    max-height: 320px;
-    object-fit: cover;
-    background: var(--surface2);
-  }
+  .modal-img { width: 100%; max-height: 320px; object-fit: cover; background: var(--surface2); }
 
   .modal-img-placeholder {
     width: 100%;
@@ -314,68 +295,17 @@
   }
 
   .modal-body { padding: 28px; }
-
-  .modal-cat {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 8px;
-  }
-
-  .modal-name {
-    font-size: 22px;
-    font-weight: 600;
-    line-height: 1.3;
-    margin-bottom: 20px;
-  }
-
-  .modal-price {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 42px;
-    color: var(--accent);
-    letter-spacing: 1px;
-    margin-bottom: 20px;
-  }
-
+  .modal-cat { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+  .modal-name { font-size: 22px; font-weight: 600; line-height: 1.3; margin-bottom: 20px; }
+  .modal-price { font-family: 'Bebas Neue', sans-serif; font-size: 44px; color: var(--accent); letter-spacing: 1px; margin-bottom: 20px; }
   .modal-section { margin-bottom: 16px; }
+  .modal-section-title { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .modal-section p { font-size: 14px; line-height: 1.6; color: #ccc; }
 
-  .modal-section-title {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 6px;
-  }
+  .specs-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .spec-chip { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 4px 10px; font-size: 12px; color: var(--text); }
 
-  .modal-section p {
-    font-size: 14px;
-    line-height: 1.6;
-    color: #ccc;
-  }
-
-  .specs-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-
-  .spec-chip {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 4px 10px;
-    font-size: 12px;
-    color: var(--text);
-  }
-
-  .modal-footer {
-    display: flex;
-    gap: 12px;
-    margin-top: 24px;
-  }
+  .modal-footer { display: flex; gap: 12px; margin-top: 24px; }
 
   .btn-wsp {
     flex: 1;
@@ -411,30 +341,13 @@
 
   .btn-close:hover { border-color: var(--accent); }
 
-  /* ESTADOS */
-  .loading, .empty-state {
-    text-align: center;
-    padding: 80px 20px;
-    color: var(--muted);
-  }
-
-  .loading-spinner {
-    width: 40px;
-    height: 40px;
-    border: 3px solid var(--border);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    margin: 0 auto 16px;
-  }
-
+  .loading, .empty-state { text-align: center; padding: 80px 20px; color: var(--muted); }
+  .loading-spinner { width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
   @keyframes spin { to { transform: rotate(360deg); } }
-
   .empty-icon { font-size: 48px; margin-bottom: 12px; }
 
-  /* RESPONSIVE */
   @media (max-width: 600px) {
-    .logo { font-size: 22px; }
+    .logo-svg { height: 34px; }
     .header-right { display: none; }
     .grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
     .card-price { font-size: 20px; }
@@ -445,7 +358,20 @@
 
 <header>
   <div class="header-inner">
-    <div class="logo">SL <span>IMPORTADOS</span></div>
+    <a class="logo-wrap" href="#">
+      <!-- Logo SL Importaciones inline SVG -->
+      <svg class="logo-svg" viewBox="0 0 220 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- S -->
+        <text x="4" y="62" font-family="'Bebas Neue', sans-serif" font-size="68" fill="white">SL</text>
+        <!-- Flecha roja (ícono de importaciones) -->
+        <g transform="translate(118, 8)">
+          <rect width="48" height="48" rx="6" fill="#e02b1d"/>
+          <path d="M34 14L20 28M20 28H30M20 28V18" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M14 34L28 20M28 20H18M28 20V30" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+        <text x="4" y="78" font-family="'DM Sans', sans-serif" font-size="11" fill="#888" letter-spacing="3">IMPORTACIONES</text>
+      </svg>
+    </a>
     <div class="search-bar">
       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
         <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
@@ -461,10 +387,9 @@
 </header>
 
 <div class="filters-wrap">
-  <div class="filters-inner">
+  <div class="filters-inner" id="filtersInner">
     <span class="filter-label">Categoría</span>
-    <button class="cat-btn active" data-cat="Todos">Todos</button>
-    <select class="sort-select" id="sortSelect">
+    <select class="sort-select" id="sortSelect" style="margin-left:auto">
       <option value="default">Orden de carga</option>
       <option value="price-asc">Precio: menor a mayor</option>
       <option value="price-desc">Precio: mayor a menor</option>
@@ -486,7 +411,6 @@
   </div>
 </main>
 
-<!-- MODAL -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
   <div class="modal" id="modal">
     <div id="modalContent"></div>
@@ -495,18 +419,18 @@
 
 <script>
 const SHEET_ID = "1l6pRTYDWOf4--MpL2wf0Pu79VA7dUVsXPoQsm0s6mNI";
-const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=PRODUCTOS`;
+const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=PRODUCTOS&headers=0`;
+const WSP_NUMBER = "5492326471208";
 
 let allProducts = [];
 let activeCategory = "Todos";
 let sortMode = "default";
 let searchQuery = "";
 
-// Emoji por categoría
 const CAT_EMOJI = {
   "TV": "📺", "Smartphone": "📱", "Notebook": "💻", "Lavarropas": "🫧",
   "Heladera": "❄️", "Consola": "🎮", "Smartwatch": "⌚", "Ventilador": "🌀",
-  "Aire Acondicionado": "🌡️", "Microondas": "📡", "Tablet": "📲"
+  "Freezer": "🧊", "Frigobar": "🍺", "Aire": "🌡️", "Microondas": "📡", "Tablet": "📲"
 };
 
 function getCatEmoji(cat) {
@@ -520,7 +444,7 @@ function getCatEmoji(cat) {
 function formatPrice(val) {
   if (!val) return "";
   const num = parseFloat(String(val).replace(/[^0-9.]/g, ""));
-  if (isNaN(num)) return val;
+  if (isNaN(num) || num === 0) return "";
   return "$" + num.toLocaleString("es-AR");
 }
 
@@ -528,50 +452,58 @@ async function loadProducts() {
   try {
     const res = await fetch(SHEET_URL);
     const text = await res.text();
-    const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
+    const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*?)\);?\s*$/)[1]);
     const rows = json.table.rows;
 
     allProducts = [];
     for (const row of rows) {
-      const cells = row.c;
-      if (!cells || !cells[1] || !cells[1].v) continue;
+      const c = row.c;
+      if (!c) continue;
+      const nombre = c[1]?.v || c[1]?.f || "";
+      if (!nombre || nombre.toString().toUpperCase().includes("NOMBRE") || nombre.toString().includes("BASE DE")) continue;
+      const venta = parseFloat(c[4]?.v) || 0;
+      if (!nombre) continue;
       allProducts.push({
-        fecha:       cells[0]?.v || "",
-        nombre:      cells[1]?.v || "",
-        categoria:   cells[2]?.v || "",
-        costo:       parseFloat(cells[3]?.v) || 0,
-        venta:       parseFloat(cells[4]?.v) || 0,
-        margen:      cells[5]?.v || "",
-        descripcion: cells[6]?.v || "",
-        specs:       cells[7]?.v || "",
-        texto_redes: cells[8]?.v || "",
-        imagen:      cells[9]?.v || "",
+        fecha:       c[0]?.v || "",
+        nombre:      nombre,
+        categoria:   c[2]?.v || "General",
+        costo:       parseFloat(c[3]?.v) || 0,
+        venta:       venta,
+        margen:      c[5]?.v || "",
+        descripcion: c[6]?.v || "",
+        specs:       c[7]?.v || "",
+        texto_redes: c[8]?.v || "",
+        imagen:      c[9]?.v || "",
       });
     }
 
     document.getElementById("productCount").textContent = allProducts.length;
-    document.getElementById("updateTime").textContent = "Actualizado " + new Date().toLocaleTimeString("es-AR", {hour:"2-digit", minute:"2-digit"});
+    document.getElementById("updateTime").textContent = "· " + new Date().toLocaleTimeString("es-AR", {hour:"2-digit", minute:"2-digit"});
 
     buildCategoryFilters();
     render();
 
   } catch (e) {
-    document.getElementById("loadingState").innerHTML = `<div class="empty-icon">⚠️</div><p>Error cargando productos.<br>Verificá que la planilla sea pública.</p>`;
+    console.error(e);
+    document.getElementById("loadingState").innerHTML = `<div class="empty-icon">⚠️</div><p>Error cargando productos.<br><small style="color:#555">${e.message}</small></p>`;
   }
 }
 
 function buildCategoryFilters() {
-  const cats = ["Todos", ...new Set(allProducts.map(p => p.categoria).filter(Boolean))].sort();
-  const wrap = document.querySelector(".filters-inner");
-  // Limpiar botones anteriores
+  const cats = ["Todos", ...new Set(allProducts.map(p => p.categoria).filter(Boolean))].sort((a,b) => a === "Todos" ? -1 : a.localeCompare(b));
+  const wrap = document.getElementById("filtersInner");
+  const sortEl = document.getElementById("sortSelect");
   wrap.querySelectorAll(".cat-btn").forEach(b => b.remove());
-  const sortEl = wrap.querySelector(".sort-select");
   cats.forEach(cat => {
     const btn = document.createElement("button");
     btn.className = "cat-btn" + (cat === activeCategory ? " active" : "");
-    btn.dataset.cat = cat;
-    btn.textContent = (cat === "Todos" ? "" : getCatEmoji(cat) + " ") + cat;
-    btn.onclick = () => { activeCategory = cat; document.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("active")); btn.classList.add("active"); render(); };
+    btn.textContent = (cat === "Todos" ? "🏷️ " : getCatEmoji(cat) + " ") + cat;
+    btn.onclick = () => {
+      activeCategory = cat;
+      document.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      render();
+    };
     wrap.insertBefore(btn, sortEl);
   });
 }
@@ -579,7 +511,11 @@ function buildCategoryFilters() {
 function getFiltered() {
   let list = [...allProducts];
   if (activeCategory !== "Todos") list = list.filter(p => p.categoria === activeCategory);
-  if (searchQuery) list = list.filter(p => p.nombre.toLowerCase().includes(searchQuery) || p.categoria.toLowerCase().includes(searchQuery));
+  if (searchQuery) list = list.filter(p =>
+    p.nombre.toLowerCase().includes(searchQuery) ||
+    p.categoria.toLowerCase().includes(searchQuery) ||
+    p.specs.toLowerCase().includes(searchQuery)
+  );
   if (sortMode === "price-asc") list.sort((a,b) => a.venta - b.venta);
   else if (sortMode === "price-desc") list.sort((a,b) => b.venta - a.venta);
   else if (sortMode === "name-asc") list.sort((a,b) => a.nombre.localeCompare(b.nombre));
@@ -609,12 +545,15 @@ function render() {
     const card = document.createElement("div");
     card.className = "card";
     card.style.animationDelay = (i * 0.04) + "s";
-    card.innerHTML = p.imagen
-      ? `<img class="card-img" src="${p.imagen}" alt="${p.nombre}" loading="lazy" onerror="this.parentElement.querySelector('.card-img-placeholder') && this.remove(); this.style.display='none'">`
+
+    const imgHtml = p.imagen
+      ? `<img class="card-img" src="${p.imagen}" alt="${p.nombre}" loading="lazy" onerror="this.outerHTML='<div class=card-img-placeholder>${getCatEmoji(p.categoria)}</div>'">`
       : `<div class="card-img-placeholder">${getCatEmoji(p.categoria)}</div>`;
-    card.innerHTML += `
+
+    card.innerHTML = `
+      ${imgHtml}
       <div class="card-body">
-        <div class="card-cat">${getCatEmoji(p.categoria)} ${p.categoria || "General"}</div>
+        <div class="card-cat">${getCatEmoji(p.categoria)} ${p.categoria}</div>
         <div class="card-name">${p.nombre}</div>
         <div class="card-price">${formatPrice(p.venta)}</div>
         ${p.specs ? `<div class="card-specs">${p.specs}</div>` : ""}
@@ -625,51 +564,41 @@ function render() {
 }
 
 function openModal(p) {
-  const content = document.getElementById("modalContent");
   const specsArr = p.specs ? p.specs.split(",").map(s => s.trim()).filter(Boolean) : [];
-  content.innerHTML = `
+  const wspMsg = encodeURIComponent(`Hola! Me interesa este producto:\n*${p.nombre}*\nPrecio: ${formatPrice(p.venta)}\n\nQuiero más información.`);
+  const wspUrl = `https://wa.me/${WSP_NUMBER}?text=${wspMsg}`;
+
+  document.getElementById("modalContent").innerHTML = `
     ${p.imagen
-      ? `<img class="modal-img" src="${p.imagen}" alt="${p.nombre}" onerror="this.style.display='none'">`
+      ? `<img class="modal-img" src="${p.imagen}" alt="${p.nombre}" onerror="this.outerHTML='<div class=modal-img-placeholder>${getCatEmoji(p.categoria)}</div>'">`
       : `<div class="modal-img-placeholder">${getCatEmoji(p.categoria)}</div>`}
     <div class="modal-body">
-      <div class="modal-cat">${getCatEmoji(p.categoria)} ${p.categoria || "General"}</div>
+      <div class="modal-cat">${getCatEmoji(p.categoria)} ${p.categoria}</div>
       <div class="modal-name">${p.nombre}</div>
       <div class="modal-price">${formatPrice(p.venta)}</div>
       ${p.descripcion ? `<div class="modal-section"><div class="modal-section-title">Descripción</div><p>${p.descripcion}</p></div>` : ""}
-      ${specsArr.length ? `<div class="modal-section"><div class="modal-section-title">Especificaciones</div><div class="specs-chips">${specsArr.map(s => `<span class="spec-chip">${s}</span>`).join("")}</div></div>` : ""}
+      ${specsArr.length ? `<div class="modal-section"><div class="modal-section-title">Especificaciones</div><div class="specs-chips">${specsArr.map(s=>`<span class="spec-chip">${s}</span>`).join("")}</div></div>` : ""}
       <div class="modal-footer">
-        <button class="btn-wsp" onclick="window.open('https://wa.me/?text=Hola! Me interesa: ${encodeURIComponent(p.nombre)} - ${formatPrice(p.venta)}','_blank')">
+        <button class="btn-wsp" onclick="window.open('${wspUrl}','_blank')">
           <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
           Consultar por WhatsApp
         </button>
-        <button class="btn-close" onclick="document.getElementById('modalOverlay').classList.remove('open')">✕</button>
+        <button class="btn-close" onclick="document.getElementById('modalOverlay').classList.remove('open')">✕ Cerrar</button>
       </div>
     </div>`;
   document.getElementById("modalOverlay").classList.add("open");
 }
 
 function closeModal(e) {
-  if (e.target === document.getElementById("modalOverlay")) {
+  if (e.target === document.getElementById("modalOverlay"))
     document.getElementById("modalOverlay").classList.remove("open");
-  }
 }
 
-document.getElementById("searchInput").addEventListener("input", e => {
-  searchQuery = e.target.value.toLowerCase();
-  render();
-});
-
-document.getElementById("sortSelect").addEventListener("change", e => {
-  sortMode = e.target.value;
-  render();
-});
-
-document.addEventListener("keydown", e => {
-  if (e.key === "Escape") document.getElementById("modalOverlay").classList.remove("open");
-});
+document.getElementById("searchInput").addEventListener("input", e => { searchQuery = e.target.value.toLowerCase(); render(); });
+document.getElementById("sortSelect").addEventListener("change", e => { sortMode = e.target.value; render(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") document.getElementById("modalOverlay").classList.remove("open"); });
 
 loadProducts();
-// Auto-refresh cada 5 minutos
 setInterval(loadProducts, 5 * 60 * 1000);
 </script>
 </body>
