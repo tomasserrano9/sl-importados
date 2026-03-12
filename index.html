@@ -629,9 +629,59 @@
       .grid, .skeleton-grid { grid-template-columns: 1fr; }
       .card-img-wrap { aspect-ratio: 4/3; }
     }
+
+    /* ====== CUOTAS ====== */
+    .card-cuotas {
+      display: flex; flex-direction: column; gap: 2px; margin-top: 2px;
+    }
+    .card-cuota-line {
+      font-size: 11.5px; color: var(--muted2); font-weight: 400;
+    }
+    .card-cuota-line strong {
+      color: var(--accent); font-weight: 600;
+    }
+    .modal-financiacion {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 12px; padding: 18px; margin-bottom: 4px;
+    }
+    .modal-fin-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 0;
+    }
+    .modal-fin-row:not(:last-child) {
+      border-bottom: 1px solid var(--border);
+    }
+    .modal-fin-label {
+      font-size: 13px; color: var(--muted2); font-weight: 400;
+    }
+    .modal-fin-price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px; color: var(--text); letter-spacing: 0.5px;
+    }
+    .modal-fin-total {
+      font-size: 11px; color: var(--muted); font-weight: 300;
+    }
+    .modal-fin-contado .modal-fin-price {
+      color: var(--accent); font-size: 24px;
+    }
+    .modal-fin-highlight {
+      background: var(--accent-glow); border-radius: 8px; padding: 2px 8px; margin: -2px -8px;
+    }
+    /* ====== PROMO BANNER ====== */
+    .promo-banner {
+      background: linear-gradient(90deg, var(--accent), #c62416);
+      color: white; text-align: center;
+      padding: 9px 16px; font-size: 13px; font-weight: 500;
+      letter-spacing: 0.3px;
+    }
+    @media (max-width: 700px) {
+      .promo-banner { font-size: 11px; padding: 7px 12px; }
+      .card-cuota-line { font-size: 10.5px; }
+    }
   </style>
 </head>
 <body>
+  <div class="promo-banner" id="promoBanner">💳 PAGÁ EN CUOTAS — HASTA 6 CUOTAS CON INTERÉS · ENVÍOS A TODO EL PAÍS</div>
   <header>
     <div class="header-stripe"></div>
     <div class="header-inner">
@@ -753,6 +803,7 @@
     const SHEET_ID = "1l6pRTYDWOf4--MpL2wf0Pu79VA7dUVsXPoQsm0s6mNI";
     const SHEET_NAME = "PRODUCTOS";
     const WSP_NUMBER = "5492326471208";
+    let interes3Cuotas = 15, interes6Cuotas = 25; // Defaults, se leen del Sheet
     let allProducts = [], activeCategory = "Todos", sortMode = "default", searchQuery = "";
     let currentModalIndex = -1, currentFilteredList = [];
     const CAT_EMOJI = {"TV":"📺","Smartphone":"📱","Notebook":"💻","Lavarropas":"🫧","Heladera":"❄️","Consola":"🎮","Smartwatch":"⌚","Ventilador":"🌀","Freezer":"🧊","Frigobar":"🍺","Aire":"🌡️","Microondas":"📡","Tablet":"📲","Bicicleta":"🚲"};
@@ -799,6 +850,16 @@
         const text = await res.text();
         const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*?)\);?\s*$/)[1]);
         const rows = json.table.rows;
+
+        // Leer intereses de cuotas desde fila 2 del Sheet (celdas L2 y M2 = indices 11 y 12)
+        if (rows.length > 1 && rows[1].c) {
+          const configRow = rows[1].c;
+          if (configRow[11] && configRow[11].v) interes3Cuotas = parseFloat(configRow[11].v) || 15;
+          if (configRow[12] && configRow[12].v) interes6Cuotas = parseFloat(configRow[12].v) || 25;
+        }
+        // Actualizar banner con los valores reales
+        const bannerEl = document.getElementById("promoBanner");
+        if (bannerEl) bannerEl.textContent = "💳 PAGÁ EN CUOTAS — 3 cuotas (" + interes3Cuotas + "% interés) · 6 cuotas (" + interes6Cuotas + "% interés) · ENVÍOS A TODO EL PAÍS";
         allProducts = [];
         for (const row of rows) {
           const c = row.c;
@@ -910,6 +971,10 @@
           '<div class="card-body">' +
           '<div class="card-name">' + displayName + '</div>' +
           '<div class="card-price"><span>$</span>' + formatPrice(p.venta) + '</div>' +
+          (p.venta > 0 ? '<div class="card-cuotas">' +
+            '<div class="card-cuota-line"><strong>' + interes3Cuotas + '</strong>x $' + formatPrice(Math.round(p.venta * (1 + interes3Cuotas/100) / 3)) + '</div>' +
+            '<div class="card-cuota-line"><strong>' + interes6Cuotas + '</strong>x $' + formatPrice(Math.round(p.venta * (1 + interes6Cuotas/100) / 6)) + '</div>' +
+          '</div>' : '') +
           (p.specs ? '<div class="card-specs">' + p.specs + '</div>' : '') +
           '<div class="card-footer">' +
           '<span class="card-cta">Ver detalle &rarr;</span>' +
@@ -941,6 +1006,20 @@
       html += '<span class="modal-stock ' + (inStock ? 'in-stock' : 'no-stock') + '">';
       html += '<span class="modal-stock-dot"></span>' + (inStock ? 'Disponible' : 'Sin stock') + '</span></div>';
       html += '<div class="modal-price"><small>$</small>' + formatPrice(p.venta) + '</div>';
+      // Tabla de financiación
+      if (p.venta > 0) {
+        const total3 = Math.round(p.venta * (1 + interes3Cuotas/100));
+        const total6 = Math.round(p.venta * (1 + interes6Cuotas/100));
+        const cuota3 = Math.round(total3 / 3);
+        const cuota6 = Math.round(total6 / 6);
+        html += '<div class="modal-section-title">Financiacion</div>';
+        html += '<div class="modal-financiacion">';
+        html += '<div class="modal-fin-row modal-fin-contado"><span class="modal-fin-label">💰 Contado</span><span class="modal-fin-price">$' + formatPrice(p.venta) + '</span></div>';
+        html += '<div class="modal-fin-row"><span class="modal-fin-label">3 cuotas de</span><div><span class="modal-fin-price">$' + formatPrice(cuota3) + '</span><span class="modal-fin-total"> (total $' + formatPrice(total3) + ')</span></div></div>';
+        html += '<div class="modal-fin-row"><span class="modal-fin-label">6 cuotas de</span><div><span class="modal-fin-price">$' + formatPrice(cuota6) + '</span><span class="modal-fin-total"> (total $' + formatPrice(total6) + ')</span></div></div>';
+        html += '</div>';
+        html += '<div class="modal-divider"></div>';
+      }
       if (p.descripcion) {
         html += '<div class="modal-section-title">Descripcion</div>';
         html += '<p class="modal-desc">' + p.descripcion + '</p>';
